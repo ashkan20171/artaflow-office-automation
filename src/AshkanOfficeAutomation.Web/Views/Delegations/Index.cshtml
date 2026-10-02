@@ -1,0 +1,5 @@
+@model IEnumerable<Delegation>
+@{ViewData["Title"]="جانشینی";}
+<div class="pagehead"><div><h1>جانشینی و تفویض موقت</h1><p>برای زمان مرخصی یا مأموریت، جانشین تعریف کنید.</p></div></div>
+<div class="grid2"><form asp-action="Create" method="post" class="panel"><h3>جانشین جدید</h3><label>کاربر جانشین</label><select name="delegateUserId">@foreach(var u in (IEnumerable<AppUser>)ViewBag.Users){<option value="@u.Id">@u.FullName</option>}</select><label>از</label><input type="datetime-local" name="from" required><label>تا</label><input type="datetime-local" name="to" required><button class="btn">ثبت</button></form>
+<div class="panel"><h3>سوابق</h3>@foreach(var d in Model){<div class="referral"><b>@LocalDate.DateTime(d.From.ToLocalTime()) — @LocalDate.DateTime(d.To.ToLocalTime())</b><small> · @(d.IsActive?"فعال":"غیرفعال")</small>@if(d.IsActive){<form asp-action="Disable" method="post"><input type="hidden" name="id" value="@d.Id"><button class="ghost">غیرفعال</button></form>}</div>}</div></div>

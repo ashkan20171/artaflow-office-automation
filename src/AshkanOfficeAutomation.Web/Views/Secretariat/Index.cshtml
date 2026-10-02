@@ -1,0 +1,4 @@
+@model IEnumerable<Letter>
+@{ViewData["Title"]="دبیرخانه";}
+<div class="pagehead"><div><h1>دبیرخانه مرکزی</h1><p>ثبت و کنترل مکاتبات رسمی سازمان</p></div></div>
+<div class="panel"><table><thead><tr><th>شماره</th><th>موضوع</th><th>نوع</th><th>وضعیت</th><th></th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.Number</td><td>@x.Subject</td><td>@x.Type</td><td>@x.Status</td><td><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id">مشاهده</a></td></tr>}</tbody></table></div>

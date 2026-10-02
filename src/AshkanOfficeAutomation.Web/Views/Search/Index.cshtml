@@ -1,0 +1,8 @@
+@model IEnumerable<Letter>
+@{ViewData["Title"]="جست‌وجوی پیشرفته"; var f=(LetterSearchInput)ViewBag.Filter;}
+<div class="pagehead"><div><h1>جست‌وجوی پیشرفته</h1><p>جست‌وجو فقط در مکاتباتی انجام می‌شود که مجوز مشاهده آن‌ها را دارید.</p></div></div>
+<form method="get" class="panel searchbar"><input name="Q" value="@f.Q" placeholder="شماره، موضوع یا متن نامه...">
+<select name="Type"><option value="">همه انواع</option>@foreach(var x in Enum.GetValues<LetterType>()){<option value="@x" selected="@(f.Type==x)">@x</option>}</select>
+<select name="Status"><option value="">همه وضعیت‌ها</option>@foreach(var x in Enum.GetValues<LetterStatus>()){<option value="@x" selected="@(f.Status==x)">@x</option>}</select>
+<button class="btn">جست‌وجو</button></form>
+<div class="panel"><table><thead><tr><th>شماره</th><th>موضوع</th><th>نوع</th><th>وضعیت</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.Number</td><td><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id">@x.Subject</a></td><td>@x.Type</td><td>@x.Status</td></tr>}</tbody></table></div>

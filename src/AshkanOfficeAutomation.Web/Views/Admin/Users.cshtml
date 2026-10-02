@@ -1,0 +1,3 @@
+@model IEnumerable<AppUser>
+
+@{ViewData["Title"]="کاربران";}<div class="pagehead"><div><h1>کاربران و دسترسی‌ها</h1><p>مدیریت هویت، نقش، واحد و وضعیت حساب</p></div><a class="btn" asp-action="CreateUser">+ کاربر جدید</a></div><div class="panel"><table><thead><tr><th>نام</th><th>نام کاربری</th><th>ایمیل</th><th>وضعیت</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>@foreach(var u in Model){<tr><td>@u.FullName</td><td>@u.UserName</td><td>@u.Email</td><td><span class="badge">@(u.IsActive?"فعال":"غیرفعال")</span></td><td>@(u.IsActive?"فعال":"غیرفعال")</td><td><form asp-action="ToggleUser" method="post"><input type="hidden" name="id" value="@u.Id"><button class="ghost">@(u.IsActive?"غیرفعال":"فعال")</button></form></td></tr>}</tbody></table></div>

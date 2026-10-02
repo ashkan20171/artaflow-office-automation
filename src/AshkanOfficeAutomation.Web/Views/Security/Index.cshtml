@@ -1,0 +1,9 @@
+@model IEnumerable<UserSessionRecord>
+@{ViewData["Title"]="امنیت حساب";}
+<div class="pagehead"><div><h1>امنیت حساب</h1><p>احراز هویت دومرحله‌ای و نشست‌های کاربری</p></div></div>
+@if(TempData["Info"]!=null){<div class="alert">@TempData["Info"]</div>}
+@if(TempData["Error"]!=null){<div class="alert danger">@TempData["Error"]</div>}
+@if(TempData["RecoveryCodes"]!=null){<div class="alert"><b>Recovery Codes — فقط یک‌بار ذخیره کنید:</b><p class="codes">@TempData["RecoveryCodes"]</p></div>}
+<div class="grid2"><div class="panel"><h3>Two-Factor Authentication</h3><p>وضعیت: <b>@((bool)ViewBag.TwoFactor?"فعال":"غیرفعال")</b></p><form asp-action="EnableAuthenticator" method="post"><button class="btn">راه‌اندازی Authenticator</button></form><form asp-action="VerifyAuthenticator" method="post" class="inline-security"><input name="code" inputmode="numeric" placeholder="کد ۶ رقمی" required><button class="ghost">تأیید و فعال‌سازی</button></form>
+@if((bool)ViewBag.TwoFactor){<form asp-action="DisableTwoFactor" method="post"><button class="ghost">غیرفعال‌کردن 2FA</button></form>}</div>
+<div class="panel"><h3>نشست‌ها و دستگاه‌ها</h3>@if(!Model.Any()){<p class="muted">هنوز Session telemetry ثبت نشده است.</p>}@foreach(var x in Model){<div class="session"><div><b>@x.IpAddress</b><small>@LocalDate.DateTime(x.SignedInAt.ToLocalTime()) · @x.UserAgent</small></div>@if(x.RevokedAt==null){<form asp-action="Revoke" method="post"><input type="hidden" name="id" value="@x.Id"><button class="ghost">لغو</button></form>}</div>}</div></div>

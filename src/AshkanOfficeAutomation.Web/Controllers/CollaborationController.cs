@@ -1,0 +1,10 @@
+using AshkanOfficeAutomation.Web.Data; using AshkanOfficeAutomation.Web.Models; using AshkanOfficeAutomation.Web.Services;
+using Microsoft.AspNetCore.Authorization; using Microsoft.AspNetCore.Identity; using Microsoft.AspNetCore.Mvc; using Microsoft.EntityFrameworkCore;
+namespace AshkanOfficeAutomation.Web.Controllers;
+[Authorize] public class CollaborationController(AppDbContext db,UserManager<AppUser> users,IAuditService audit):Controller {
+ string Uid=>users.GetUserId(User)!;
+ async Task<bool> Can(long id)=>await db.Letters.AnyAsync(x=>x.Id==id&&(x.CreatorId==Uid||User.IsInRole("Administrator")||x.Referrals.Any(r=>r.ToUserId==Uid)));
+ [HttpPost,ValidateAntiForgeryToken] public async Task<IActionResult> Comment(long letterId,string text){if(!await Can(letterId))return Forbid();if(string.IsNullOrWhiteSpace(text)||text.Length>1500)return BadRequest();db.LetterComments.Add(new LetterComment{LetterId=letterId,UserId=Uid,Text=text.Trim()});await db.SaveChangesAsync();await audit.WriteAsync(Uid,"comment","Letter",letterId.ToString(),HttpContext.Connection.RemoteIpAddress?.ToString());return RedirectToAction("Details","Letters",new{id=letterId});}
+ [HttpPost,ValidateAntiForgeryToken] public async Task<IActionResult> ToggleBookmark(long letterId){if(!await Can(letterId))return Forbid();var x=await db.LetterBookmarks.FirstOrDefaultAsync(x=>x.LetterId==letterId&&x.UserId==Uid);if(x==null)db.LetterBookmarks.Add(new LetterBookmark{LetterId=letterId,UserId=Uid});else db.LetterBookmarks.Remove(x);await db.SaveChangesAsync();return RedirectToAction("Details","Letters",new{id=letterId});}
+ [HttpPost,ValidateAntiForgeryToken] public async Task<IActionResult> AddTag(long letterId,string name){if(!await Can(letterId))return Forbid();name=(name??"").Trim();if(name.Length<1||name.Length>60)return BadRequest();if(!await db.LetterTags.AnyAsync(x=>x.LetterId==letterId&&x.Name==name)){db.LetterTags.Add(new LetterTag{LetterId=letterId,Name=name});await db.SaveChangesAsync();}return RedirectToAction("Details","Letters",new{id=letterId});}
+}

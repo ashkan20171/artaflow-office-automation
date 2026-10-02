@@ -1,0 +1,10 @@
+@model NewUserInput
+@{ViewData["Title"]="ایجاد کاربر";}
+<div class="pagehead"><div><h1>ایجاد کاربر جدید</h1><p>اختصاص نقش و واحد سازمانی</p></div></div>
+<form method="post" class="panel formgrid"><div asp-validation-summary="All" class="wide error"></div>
+<div><label>نام کامل</label><input asp-for="FullName"></div><div><label>نام کاربری</label><input asp-for="UserName"></div>
+<div><label>ایمیل</label><input asp-for="Email"></div><div><label>رمز عبور</label><input asp-for="Password" type="password"></div>
+<div><label>نقش</label><select asp-for="Role">@foreach(var role in (IEnumerable<string?>)ViewBag.Roles){<option value="@role">@role</option>}</select></div>
+<div><label>واحد سازمانی</label><select asp-for="DepartmentId"><option value="">بدون واحد</option>
+@foreach(var dep in (IEnumerable<Department>)ViewBag.Departments){<option value="@dep.Id">@dep.Name</option>}</select></div>
+<div class="wide"><button class="btn">ثبت کاربر</button></div></form>

@@ -1,0 +1,41 @@
+@model Letter
+@{ViewData["Title"]="جزئیات نامه";}
+<div class="pagehead"><div><h1>@Model.Subject</h1><p>@Model.Number · @LocalDate.Date(Model.CreatedAt.ToLocalTime())</p></div><a class="btn" asp-action="Index">بازگشت</a></div>
+<div class="panel"><p><b>فرستنده:</b> @Model.Sender &nbsp; <b>گیرنده:</b> @Model.Receiver</p>
+<p><b>اولویت:</b> @Model.Priority &nbsp; <b>وضعیت:</b> @Model.Status</p>
+<hr><div class="letterbody">@Model.Body</div></div>
+<div class="grid2"><div class="panel"><h3>تاریخچه ارجاعات</h3>
+@if(!Model.Referrals.Any()){<p class="muted">هنوز ارجاعی ثبت نشده است.</p>}
+@foreach(var r in Model.Referrals.OrderByDescending(x=>x.CreatedAt)){<p class="referral">@LocalDate.DateTime(r.CreatedAt.ToLocalTime()) · @r.Note · @(r.DoneAt.HasValue?"انجام‌شده":"باز")</p>}
+</div><div class="panel"><h3>ارجاع نامه</h3>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","letters.refer")){
+<form asp-controller="Inbox" asp-action="Refer" method="post"><input type="hidden" name="LetterId" value="@Model.Id">
+<label>گیرنده</label><select name="ToUserId" required>
+@foreach(var u in (IEnumerable<AppUser>)ViewBag.Users){<option value="@u.Id">@u.FullName (@u.UserName)</option>}
+</select><label>توضیحات</label><textarea name="Note" rows="4"></textarea><button class="btn">ثبت ارجاع</button></form>
+}else{<p class="muted">مجوز ارجاع ندارید.</p>}
+</div></div>
+
+<div class="panel"><h3>پیوست‌ها</h3>
+@if(Model.Attachments.Any()){<div class="attachments">@foreach(var a in Model.Attachments){<a asp-controller="Attachments" asp-action="Download" asp-route-id="@a.Id">📎 @a.OriginalName <small>(@Math.Ceiling(a.Size/1024d) KB)</small></a>}</div>}
+else{<p class="muted">پیوستی ثبت نشده است.</p>}
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","attachments.upload")){
+<form asp-controller="Attachments" asp-action="Upload" method="post" enctype="multipart/form-data" class="upload"><input type="hidden" name="letterId" value="@Model.Id"><input type="file" name="file" required><button class="btn">افزودن پیوست</button></form>}
+</div>
+
+<div class="panel"><h3>گردش کار و Timeline</h3>
+<div class="workflow-actions">
+<form asp-controller="Workflow" asp-action="Action" method="post"><input type="hidden" name="letterId" value="@Model.Id"><input type="hidden" name="action" value="submit"><button class="ghost">ارسال به گردش</button></form>
+<form asp-controller="Workflow" asp-action="Action" method="post"><input type="hidden" name="letterId" value="@Model.Id"><input type="hidden" name="action" value="approve"><button class="btn">تأیید</button></form>
+<form asp-controller="Workflow" asp-action="Action" method="post"><input type="hidden" name="letterId" value="@Model.Id"><input type="hidden" name="action" value="reject"><button class="ghost">برگشت</button></form>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","letters.archive")){<form asp-controller="Workflow" asp-action="Action" method="post"><input type="hidden" name="letterId" value="@Model.Id"><input type="hidden" name="action" value="archive"><button class="ghost">بایگانی</button></form>}
+</div>
+<div class="workflow-rail">@foreach(var x in (IEnumerable<WorkflowAction>)ViewBag.Workflow){<div class="workflow-step"><span class="workflow-node"></span><div class="workflow-step__body"><div><b>@x.Action</b><time>@LocalDate.DateTime(x.At.ToLocalTime())</time></div>@if(!string.IsNullOrWhiteSpace(x.Note)){<p>@x.Note</p>}</div></div>}</div>
+@if(Model.ArchivedAt.HasValue){<p class="badge">کد بایگانی: @Model.ArchiveCode</p>}</div>
+
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","letters.register")){
+<div class="panel"><h3>ثبت دبیرخانه</h3><form asp-controller="Secretariat" asp-action="Register" method="post" class="formgrid"><input type="hidden" name="letterId" value="@Model.Id"><div><label>شماره خارجی</label><input name="externalNumber"></div><div><label>تاریخ خارجی</label><input type="date" name="externalDate"></div><div><label>دفتر ثبت</label><input name="book" value="دفتر مرکزی"></div><div class="wide"><button class="btn">ثبت در دبیرخانه</button></div></form></div>}
+
+<div class="grid2"><div class="panel"><h3>همکاری و یادداشت</h3><form asp-controller="Collaboration" asp-action="Comment" method="post"><input type="hidden" name="letterId" value="@Model.Id"><textarea name="text" maxlength="1500" placeholder="یادداشت یا نظر..." required></textarea><button class="btn">ثبت یادداشت</button></form><div class="comments">@foreach(var c in (IEnumerable<LetterComment>)ViewBag.Comments){<div class="comment"><b>@c.UserId</b><small>@LocalDate.DateTime(c.CreatedAt.ToLocalTime())</small><p>@c.Text</p></div>}</div></div><div class="panel"><h3>برچسب‌ها و نشان‌گذاری</h3><form asp-controller="Collaboration" asp-action="ToggleBookmark" method="post"><input type="hidden" name="letterId" value="@Model.Id"><button class="ghost">@((bool)ViewBag.Bookmarked?"★ حذف نشان":"☆ نشان‌گذاری")</button></form><div class="taglist">@foreach(var t in (IEnumerable<LetterTag>)ViewBag.Tags){<span class="tag">#@t.Name</span>}</div><form asp-controller="Collaboration" asp-action="AddTag" method="post" class="inline-security"><input type="hidden" name="letterId" value="@Model.Id"><input name="name" maxlength="60" placeholder="برچسب جدید"><button class="ghost">افزودن</button></form></div></div>
+
+<section class="letter-ai-strip"><div><span>✦</span><div><b>AI Letter Assistant</b><small>خلاصه، تحلیل اولویت و پیش‌نویس پاسخ</small></div></div><div class="letter-ai-actions"><a asp-controller="AiCopilot" asp-action="Letter" asp-route-id="@Model.Id" asp-route-mode="summary">خلاصه</a><a asp-controller="AiCopilot" asp-action="Letter" asp-route-id="@Model.Id" asp-route-mode="classify">تحلیل</a><a asp-controller="AiCopilot" asp-action="Letter" asp-route-id="@Model.Id" asp-route-mode="reply">پیشنهاد پاسخ</a></div></section>

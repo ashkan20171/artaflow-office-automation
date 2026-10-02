@@ -1,0 +1,72 @@
+<!doctype html><html lang="@(LocalDate.IsPersian ? "fa" : "en")" dir="@(LocalDate.IsPersian ? "rtl" : "ltr")"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@ViewData["Title"] - Ashkan Office</title><link rel="stylesheet" href="~/css/site.css" asp-append-version="true">  <link rel="manifest" href="~/manifest.webmanifest" />
+  <meta name="theme-color" content="#0f766e" />
+</head><body class="@(LocalDate.IsPersian ? "culture-fa" : "culture-en")">
+<div class="app">
+<aside class="sidebar"><a class="brand" asp-controller="Home" asp-action="Index"><img src="~/img/logo.svg"><span>@(LocalDate.IsPersian ? "اتوماسیون اشکان" : "Ashkan Office")<small>@(LocalDate.IsPersian ? "اتوماسیون اداری هوشمند" : "Smart Office Automation")</small></span></a>
+<nav>
+<a asp-controller="Home" asp-action="Index">⌂ @(LocalDate.IsPersian ? "داشبورد" : "Dashboard")</a>
+<a asp-controller="Letters" asp-action="Index">✉ @(LocalDate.IsPersian ? "مکاتبات" : "Correspondence")</a>
+<a asp-controller="CommandCenter" asp-action="Index">⌁ @(LocalDate.IsPersian ? "مرکز فرماندهی" : "Command Center")</a>
+<a asp-controller="Inbox" asp-action="Index">▣ @(LocalDate.IsPersian ? "کارتابل من" : "My Inbox")</a><a asp-controller="Inbox" asp-action="Index">↗ @(LocalDate.IsPersian ? "ارجاعات" : "Referrals")</a><a asp-controller="Search" asp-action="Index">⌕ @(LocalDate.IsPersian ? "جست‌وجوی پیشرفته" : "Advanced Search")</a>
+<a asp-controller="Notifications" asp-action="Index">◉ @(LocalDate.IsPersian ? "اعلان‌ها" : "Notifications")</a>
+<a asp-controller="Delegations" asp-action="Index">⇄ @(LocalDate.IsPersian ? "جانشینی" : "Delegation")</a>
+<a asp-controller="Security" asp-action="Index">⚿ @(LocalDate.IsPersian ? "امنیت حساب" : "Account Security")</a>
+<a asp-controller="Tasks" asp-action="Index">✓ @(LocalDate.IsPersian ? "وظایف" : "Tasks")</a>
+<a asp-controller="Productivity" asp-action="Index">★ @(LocalDate.IsPersian ? "مرکز بهره‌وری" : "Productivity")</a>
+<a asp-controller="Templates" asp-action="Index">▧ @(LocalDate.IsPersian ? "قالب‌های نامه" : "Letter Templates")</a>
+<a asp-controller="Knowledge" asp-action="Index">◇ @(LocalDate.IsPersian ? "مرکز دانش" : "Knowledge Base")</a>
+<a asp-controller="Meetings" asp-action="Index">▦ @(LocalDate.IsPersian ? "جلسات" : "Meetings")</a>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","letters.register")){<a asp-controller="Secretariat" asp-action="Index">▤ @(LocalDate.IsPersian ? "دبیرخانه" : "Secretariat")</a>}
+<a asp-controller="Analytics" asp-action="Index">▥ @(LocalDate.IsPersian ? "داشبورد تحلیلی" : "Analytics")</a>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","diagnostics.view")){<a asp-controller="Diagnostics" asp-action="Index">◌ @(LocalDate.IsPersian ? "سلامت سامانه" : "System Health")</a>}
+<a asp-controller="Admin" asp-action="Reports">▥ @(LocalDate.IsPersian ? "گزارش‌ها" : "Reports")</a>
+@if(User.IsInRole("Administrator")){<a asp-controller="Admin" asp-action="Users">♙ @(LocalDate.IsPersian ? "کاربران" : "Users")</a>
+<a asp-controller="Roles" asp-action="Index">⚿ @(LocalDate.IsPersian ? "نقش‌ها و مجوزها" : "Roles & Permissions")</a>
+<a asp-controller="Departments" asp-action="Index">⌘ @(LocalDate.IsPersian ? "ساختار سازمانی" : "Organization")</a>
+<a asp-controller="Admin" asp-action="Audit">◴ @(LocalDate.IsPersian ? "گزارش امنیتی" : "Audit Log")</a>
+<a asp-controller="Settings" asp-action="Index">⚙ @(LocalDate.IsPersian ? "تنظیمات سازمان" : "Organization Settings")</a>}
+<a asp-controller="Architecture" asp-action="Index">◫ @(LocalDate.IsPersian ? "معماری سامانه" : "MVC Architecture")</a>
+<a asp-controller="Activity" asp-action="Index">◉ @(LocalDate.IsPersian ? "رویدادهای سازمانی" : "Activity Feed")</a>
+<a asp-controller="Sla" asp-action="Index">◷ @(LocalDate.IsPersian ? "توافق سطح خدمت و سررسیدها" : "SLA & Deadlines")</a>
+<a asp-controller="NotificationPreferences" asp-action="Index">⚙ @(LocalDate.IsPersian ? "تنظیمات اعلان" : "Notification Settings")</a>
+<a asp-controller="AiCopilot" asp-action="Index">✦ @(LocalDate.IsPersian ? "دستیار هوشمند" : "AI Copilot")</a>
+<a asp-controller="GlobalSearch" asp-action="Index">⌕ @(LocalDate.IsPersian ? "جست‌وجوی سراسری" : "Global Search")</a>
+<a asp-controller="Localization" asp-action="Index">◫ @(LocalDate.IsPersian?"زبان و تاریخ":"Language & Date")</a>
+</nav></aside>
+<main><header class="topbar"><div class="topbar-title"><b>@(LocalDate.IsPersian ? "سامانه اتوماسیون اداری اشکان" : "Ashkan Office Automation")</b><span class="muted">@(LocalDate.IsPersian ? " مدیریت یکپارچه مکاتبات و گردش کار" : " Integrated correspondence & workflow management")</span></div><button class="cmd-trigger" type="button" data-command-palette>⌕ <span>@(LocalDate.IsPersian ? "فرمان سریع" : "Quick Command")</span><kbd>Ctrl K</kbd></button><form class="top-search" asp-controller="GlobalSearch" asp-action="Index" method="get"><span>⌕</span><input name="q" placeholder="@(LocalDate.IsPersian ? "جست‌وجوی سراسری..." : "Search everywhere...")" autocomplete="off"><kbd>Ctrl K</kbd></form>
+<form asp-controller="Account" asp-action="Logout" method="post"><button class="ghost">@(LocalDate.IsPersian ? "خروج" : "Logout")</button></form>
+<div class="workspace-tools" aria-label="@(LocalDate.IsPersian ? "ابزارهای فضای کار" : "Workspace tools")">
+ <button type="button" id="favoriteCurrent" class="workspace-icon" aria-label="@(LocalDate.IsPersian ? "علاقه‌مندی" : "Favorite")">☆</button>
+ <button type="button" id="focusToggle" class="workspace-icon" title="@(LocalDate.IsPersian ? "حالت تمرکز" : "Focus mode")">◫</button>
+ <button type="button" id="densityToggle" class="workspace-icon" title="@(LocalDate.IsPersian ? "تراکم نمایش" : "Display density")">≡</button>
+ <button type="button" id="workspaceToggle" class="workspace-button">@(LocalDate.IsPersian ? "فضای من" : "My workspace")</button>
+</div>
+</header>
+<section class="content">@RenderBody()</section></main></div><script src="~/js/command-palette.js" asp-append-version="true"></script>
+<form asp-controller="Culture" asp-action="Set" method="post" class="culture-switch">
+<input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
+<button name="culture" value="fa" class="@(LocalDate.IsPersian?"active":"")">فا</button>
+<button name="culture" value="en" class="@(!LocalDate.IsPersian?"active":"")">EN</button>
+</form>
+<script src="~/js/i18n-runtime.js" asp-append-version="true"></script>
+
+<aside id="workspacePanel" class="workspace-panel" aria-label="@(LocalDate.IsPersian ? "فضای کار شخصی" : "Personal workspace")">
+ <div class="workspace-panel__head"><strong>@(LocalDate.IsPersian ? "فضای کار شخصی" : "Personal workspace")</strong><button id="workspaceClose" type="button">×</button></div>
+ <section><h3>@(LocalDate.IsPersian ? "علاقه‌مندی‌ها" : "Favorites")</h3><div id="workspaceFavorites" class="workspace-links"></div></section>
+ <section><h3>@(LocalDate.IsPersian ? "اخیراً مشاهده‌شده" : "Recently visited")</h3><div id="workspaceRecent" class="workspace-links"></div></section>
+ <p class="workspace-hint">@(LocalDate.IsPersian ? "میانبر: Ctrl+Shift+B فضای کار · Ctrl+Shift+F علاقه‌مندی" : "Shortcuts: Ctrl+Shift+B workspace · Ctrl+Shift+F favorite")</p>
+</aside>
+
+<script src="~/js/workspace.js" asp-append-version="true"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
+
+<nav class="mobile-nav" aria-label="@(LocalDate.IsPersian ? "ناوبری موبایل" : "Mobile navigation")">
+ <a asp-controller="Home" asp-action="Index"><span>⌂</span><small>@(LocalDate.IsPersian ? "خانه" : "Home")</small></a>
+ <a asp-controller="Inbox" asp-action="Index"><span>▣</span><small>@(LocalDate.IsPersian ? "کارتابل" : "Inbox")</small></a>
+ <a asp-controller="Letters" asp-action="Create" class="mobile-nav__primary"><span>＋</span><small>@(LocalDate.IsPersian ? "نامه" : "Letter")</small></a>
+ <a asp-controller="Tasks" asp-action="Index"><span>✓</span><small>@(LocalDate.IsPersian ? "وظایف" : "Tasks")</small></a>
+ <a asp-controller="Notifications" asp-action="Index"><span>◉</span><small>@(LocalDate.IsPersian ? "اعلان‌ها" : "Alerts")</small></a>
+</nav>
+
+</body></html>

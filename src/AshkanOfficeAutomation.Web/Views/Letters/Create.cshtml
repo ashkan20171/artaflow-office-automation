@@ -1,0 +1,12 @@
+@model LetterInput
+@{ViewData["Title"]="ثبت نامه";}
+<div class="pagehead"><div><h1>ثبت مکاتبه جدید</h1><p>شماره نامه به‌صورت خودکار تولید می‌شود.</p></div></div>
+<form method="post" class="panel formgrid">
+<div asp-validation-summary="All" class="wide error"></div>
+<div><label>موضوع</label><input asp-for="Subject"><span asp-validation-for="Subject"></span></div>
+<div><label>نوع</label><select asp-for="Type" asp-items="Html.GetEnumSelectList<LetterType>()"></select></div>
+<div><label>اولویت</label><select asp-for="Priority" asp-items="Html.GetEnumSelectList<Priority>()"></select></div>
+<div><label>فرستنده</label><input asp-for="Sender"></div><div><label>گیرنده</label><input asp-for="Receiver"></div>
+<div class="wide"><label>متن نامه</label><textarea asp-for="Body" rows="8"></textarea></div>
+<div class="wide"><label class="check"><input asp-for="IsConfidential"> محرمانه</label></div>
+<div class="wide"><button class="btn">ذخیره نامه</button></div></form>

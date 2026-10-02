@@ -1,0 +1,5 @@
+@model IEnumerable<LetterTemplate>
+@{ViewData["Title"]="قالب‌های نامه";}
+<div class="pagehead"><div><h1>قالب‌های مکاتبات</h1><p>متن‌های استاندارد برای ایجاد سریع و یکپارچه نامه‌ها</p></div></div>
+<div class="grid2"><div class="panel"><h3>قالب‌های فعال</h3>@foreach(var x in Model){<div class="template-card"><b>@x.Name</b><small>@x.Type</small><p>@x.SubjectTemplate</p>@if(User.IsInRole("Administrator")||User.HasClaim("permission","templates.manage")){<form asp-action="Disable" method="post"><input type="hidden" name="id" value="@x.Id"><button class="ghost">غیرفعال</button></form>}</div>}</div>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","templates.manage")){<form asp-action="Create" method="post" class="panel"><h3>قالب جدید</h3><label>نام</label><input name="name" required><label>نوع</label><select name="type" asp-items="Html.GetEnumSelectList<LetterType>()"></select><label>عنوان پیشنهادی</label><input name="subjectTemplate"><label>متن</label><textarea name="bodyTemplate" rows="8"></textarea><button class="btn">ذخیره قالب</button></form>}</div>

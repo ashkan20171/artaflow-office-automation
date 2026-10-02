@@ -1,0 +1,10 @@
+@{ViewData["Title"]=LocalDate.IsPersian?"زبان و تاریخ":"Language & Date";}
+<section class="hero-panel"><div><span class="eyebrow">LOCALIZATION</span><h1>@(LocalDate.IsPersian?"زبان و تقویم هوشمند":"Smart language & calendar")</h1><p>@(LocalDate.IsPersian?"فارسی: راست‌به‌چپ و تاریخ شمسی":"English: left-to-right and Gregorian dates")</p></div><div class="ai-orb">@(LocalDate.IsPersian?"ش":"EN")</div></section>
+<div class="surface locale-demo"><div><span>@(LocalDate.IsPersian?"امروز":"Today")</span><b dir="ltr">@ViewBag.Today</b></div><div><span>@(LocalDate.IsPersian?"اکنون":"Now")</span><b dir="ltr">@ViewBag.Now</b></div><div><span>@(LocalDate.IsPersian?"جهت رابط":"Direction")</span><b>@(LocalDate.IsPersian?"RTL":"LTR")</b></div></div>
+
+<div class="surface" style="margin-top:16px"><b>@(LocalDate.IsPersian ? "وضعیت فعال" : "Active state"):</b> <span dir="ltr">@(LocalDate.IsPersian ? "fa / RTL / Jalali" : "en / LTR / Gregorian")</span></div>
+
+<div class="surface shell-side-check" style="margin-top:16px">
+ <b>@(LocalDate.IsPersian ? "چیدمان فعال" : "Active shell"):</b>
+ <span dir="ltr">@(LocalDate.IsPersian ? "FA · RTL · Sidebar RIGHT" : "EN · LTR · Sidebar LEFT")</span>
+</div>

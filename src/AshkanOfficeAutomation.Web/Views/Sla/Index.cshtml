@@ -1,0 +1,16 @@
+@model AshkanOfficeAutomation.Web.Models.SlaDashboardViewModel
+@{ViewData["Title"]="SLA و سررسید";}
+<div class="pagehead"><div><h1>مرکز SLA و سررسید</h1><p>پایش نامه‌های عقب‌افتاده و موارد نزدیک به سررسید</p></div></div>
+@if(TempData["Info"]!=null){<div class="alert">@TempData["Info"]</div>}
+<div class="stats commandstats">
+ <div class="card dangercard"><span>عقب‌افتاده</span><strong>@Model.Overdue</strong></div>
+ <div class="card"><span>تا ۲۴ ساعت آینده</span><strong>@Model.DueSoon</strong></div>
+ <div class="card"><span>وضعیت مناسب</span><strong>@Model.Healthy</strong></div>
+</div>
+<div class="panel">
+ <div class="panel-head"><h3>پایش مکاتبات</h3>
+ @if(User.HasClaim("permission","settings.manage")){<form asp-action="ApplyDefaults" method="post" class="inline-security"><input name="hours" type="number" min="1" max="720" value="48"><button class="ghost">اعمال SLA پیش‌فرض</button></form>}</div>
+ <div class="table-wrap"><table><thead><tr><th>شماره</th><th>موضوع</th><th>اولویت</th><th>وضعیت</th><th>سررسید</th><th>سلامت SLA</th></tr></thead><tbody>
+ @foreach(var x in Model.Items){<tr class="@(x.IsOverdue?"sla-overdue":"")"><td><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.LetterId">@x.Number</a></td><td>@x.Subject</td><td>@x.Priority</td><td>@x.Status</td><td>@LocalDate.DateTime(x.DueAt)</td><td>@(x.IsOverdue?"عقب‌افتاده":x.RemainingHours<=24?"نزدیک سررسید":"مناسب")</td></tr>}
+ </tbody></table></div>
+</div>

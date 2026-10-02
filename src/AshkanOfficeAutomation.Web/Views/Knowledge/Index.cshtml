@@ -1,0 +1,6 @@
+@model IEnumerable<KnowledgeArticle>
+@{ViewData["Title"]="مرکز دانش";}
+<div class="pagehead"><div><h1>مرکز دانش سازمانی</h1><p>دستورالعمل‌ها، رویه‌ها و پاسخ‌های قابل جست‌وجو</p></div></div>
+<form method="get" class="panel kb-search"><input name="q" value="@ViewBag.Q" placeholder="جست‌وجو در دانش سازمان..."><button class="btn">جست‌وجو</button></form>
+<div class="kb-grid">@foreach(var x in Model){<a class="kb-card" asp-action="Details" asp-route-id="@x.Id"><small>@x.Category</small><h3>@x.Title</h3><p>@(x.Content.Length>150?x.Content[..150]+"…":x.Content)</p></a>}</div>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","knowledge.manage")){<form asp-action="Create" method="post" class="panel"><h3>مقاله جدید</h3><div class="formgrid"><div><label>عنوان</label><input name="title" required></div><div><label>دسته</label><input name="category" value="عمومی"></div><div class="wide"><label>کلیدواژه‌ها</label><input name="keywords"></div><div class="wide"><label>محتوا</label><textarea name="content" rows="10" required></textarea></div></div><button class="btn">انتشار</button></form>}

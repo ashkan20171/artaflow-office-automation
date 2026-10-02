@@ -1,0 +1,4 @@
+@model OrganizationSetting
+@{ViewData["Title"]="تنظیمات سازمان";}
+<div class="pagehead"><div><h1>تنظیمات سازمانی</h1><p>هویت سامانه، SLA پیش‌فرض و قابلیت‌های سازمان</p></div></div>
+<form asp-action="Save" method="post" class="panel"><input asp-for="Id" type="hidden"><div asp-validation-summary="All"></div><div class="formgrid"><div><label>نام سازمان</label><input asp-for="OrganizationName"></div><div><label>پیشوند نامه</label><input asp-for="LetterPrefix"></div><div><label>SLA پیش‌فرض (ساعت)</label><input asp-for="DefaultSlaHours" type="number"></div><div><label>ایمیل پشتیبانی</label><input asp-for="SupportEmail"></div><div><label>تلفن پشتیبانی</label><input asp-for="SupportPhone"></div><div><label><input asp-for="EnableKnowledgeBase"> مرکز دانش فعال</label></div><div><label><input asp-for="EnableRealtimeNotifications"> اعلان بلادرنگ</label></div></div><button class="btn">ذخیره تنظیمات</button></form>

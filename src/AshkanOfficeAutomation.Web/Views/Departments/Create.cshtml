@@ -1,0 +1,3 @@
+@model DepartmentInput
+@{ViewData["Title"]="واحد جدید";}
+<form method="post" class="panel formgrid"><div><label>نام واحد</label><input asp-for="Name"></div><div><label>واحد والد</label><select asp-for="ParentId"><option value="">—</option>@foreach(var d in (IEnumerable<Department>)ViewBag.Departments){<option value="@d.Id">@d.Name</option>}</select></div><div class="wide"><button class="btn">ذخیره</button></div></form>

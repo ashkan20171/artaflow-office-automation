@@ -1,0 +1,3 @@
+@{ViewData["Title"]="سلامت سامانه";}
+<div class="pagehead"><div><h1>System Health</h1><p>وضعیت اجزای اصلی و اتصال داده</p></div></div>
+<div class="stats"><div class="card"><span>Database</span><strong>@((bool)ViewBag.Database?"Healthy":"Unavailable")</strong></div><div class="card"><span>Provider</span><strong class="smallstrong">@ViewBag.Provider</strong></div><div class="card"><span>Environment</span><strong>@ViewBag.Environment</strong></div><div class="card"><span>ارجاعات باز</span><strong>@ViewBag.Pending</strong></div></div><div class="panel"><div class="metricrow"><span>Letters</span><b>@ViewBag.Letters</b></div><div class="metricrow"><span>Users</span><b>@ViewBag.Users</b></div><div class="metricrow"><span>Server time</span><b>@ViewBag.Now</b></div></div>

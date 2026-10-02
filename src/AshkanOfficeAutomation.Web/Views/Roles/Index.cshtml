@@ -1,0 +1,5 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{ViewData["Title"]="نقش‌ها و مجوزها";}
+<div class="pagehead"><div><h1>نقش‌ها و مجوزها</h1><p>کنترل دسترسی ریزدانه به قابلیت‌های سامانه</p></div></div>
+<div class="panel"><table><thead><tr><th>نقش</th><th>عملیات</th></tr></thead><tbody>
+@foreach(var r in Model){<tr><td>@r.Name</td><td><a class="btn" asp-action="Permissions" asp-route-id="@r.Id">مدیریت مجوزها</a></td></tr>}</tbody></table></div>

@@ -1,0 +1,4 @@
+@model IEnumerable<Letter>
+
+@{ViewData["Title"]="مکاتبات";}<div class="pagehead"><div><h1>مدیریت مکاتبات</h1><p>نامه‌های وارده، صادره و داخلی</p></div><a class="btn" asp-action="Create">+ نامه جدید</a></div>
+<div class="panel"><table><thead><tr><th>شماره</th><th>موضوع</th><th>نوع</th><th>اولویت</th><th>وضعیت</th><th>تاریخ</th></tr></thead><tbody>@foreach(var x in Model){<tr><td><b>@x.Number</b></td><td>@x.Subject</td><td>@x.Type</td><td>@x.Priority</td><td><span class="badge">@x.Status</span></td><td>@LocalDate.DateTime(x.CreatedAt.ToLocalTime())</td></tr>}</tbody></table></div>

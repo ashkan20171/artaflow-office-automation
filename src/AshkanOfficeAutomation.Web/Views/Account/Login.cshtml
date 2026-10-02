@@ -1,0 +1,64 @@
+@using System.Globalization
+@{
+    Layout = null;
+    var now = DateTime.Now;
+    var month = now.Month;
+    var season = month switch { 3 or 4 or 5 => "spring", 6 or 7 or 8 => "summer", 9 or 10 or 11 => "autumn", _ => "winter" };
+    var seasonFa = season switch { "spring" => "بهار", "summer" => "تابستان", "autumn" => "پاییز", _ => "زمستان" };
+    var seasonEn = char.ToUpperInvariant(season[0]) + season[1..];
+}
+<!doctype html>
+<html lang="@(LocalDate.IsPersian ? "fa" : "en")" dir="@(LocalDate.IsPersian ? "rtl" : "ltr")">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+    <title>@(LocalDate.IsPersian ? "ورود" : "Sign In") | Ashkan Office</title>
+</head>
+<body class="seasonal-login season-@season" style="--season-image:url('@Url.Content($"~/img/seasons/{season}.jpg")')">
+    <div class="seasonal-login__shade"></div>
+    <main class="seasonal-login__shell">
+        <section class="seasonal-login__intro" aria-label="@(LocalDate.IsPersian ? "معرفی سامانه" : "Platform introduction")">
+            <div class="seasonal-brand">
+                <img src="~/img/logo.svg" alt="Ashkan Office logo">
+                <div><strong>@(LocalDate.IsPersian ? "اتوماسیون اشکان" : "Ashkan Office")</strong><span>@(LocalDate.IsPersian ? "محیط کاری هوشمند و یکپارچه" : "Smart, integrated workplace")</span></div>
+            </div>
+            <div class="seasonal-login__message">
+                <span class="season-pill">@(LocalDate.IsPersian ? seasonFa : seasonEn)</span>
+                <h1>@(LocalDate.IsPersian ? "کارها، مکاتبات و همکاری سازمانی در یک فضای واحد" : "Work, correspondence and collaboration in one workspace")</h1>
+                <p>@(LocalDate.IsPersian ? "تجربه‌ای امن، آرام و حرفه‌ای برای مدیریت روز کاری شما." : "A secure, calm and professional experience for managing your workday.")</p>
+            </div>
+        </section>
+
+        <section class="seasonal-login__panel">
+            <div class="login-card login-card--seasonal">
+                <div class="login-card__head">
+                    <span class="login-card__eyebrow">@(LocalDate.IsPersian ? "ورود به سامانه" : "WELCOME BACK")</span>
+                    <h2>@(LocalDate.IsPersian ? "خوش آمدید" : "Sign in to your workspace")</h2>
+                    <p>@(LocalDate.IsPersian ? "برای ادامه اطلاعات حساب خود را وارد کنید." : "Enter your account details to continue.")</p>
+                </div>
+                @if (ViewBag.Error != null) { <div class="error">@ViewBag.Error</div> }
+                <form method="post">
+                    <label>@(LocalDate.IsPersian ? "نام کاربری" : "Username")</label>
+                    <input name="username" autocomplete="username" required placeholder="@(LocalDate.IsPersian ? "نام کاربری خود را وارد کنید" : "Enter your username")">
+                    <label>@(LocalDate.IsPersian ? "رمز عبور" : "Password")</label>
+                    <input name="password" type="password" autocomplete="current-password" required placeholder="@(LocalDate.IsPersian ? "رمز عبور خود را وارد کنید" : "Enter your password")">
+                    <label class="check"><input type="checkbox" name="remember" value="true"> @(LocalDate.IsPersian ? "مرا به خاطر بسپار" : "Remember me")</label>
+                    <button class="btn full login-submit">@(LocalDate.IsPersian ? "ورود امن" : "Secure Sign In")</button>
+                </form>
+                <div class="login-card__footer"><span>🔒</span>@(LocalDate.IsPersian ? "اتصال امن به محیط سازمانی" : "Secure connection to your organization")</div>
+                <small class="dev-credentials">@(LocalDate.IsPersian ? "نسخه توسعه" : "Development"): admin / Admin@@12345</small>
+            </div>
+        </section>
+    </main>
+    <div class="seasonal-login__bottom">
+        <span>@(LocalDate.IsPersian ? $"فصل جاری: {seasonFa}" : $"Current season: {seasonEn}")</span>
+        <form asp-controller="Culture" asp-action="Set" method="post" class="culture-switch culture-switch--login">
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+            <button name="culture" value="fa" class="@(LocalDate.IsPersian ? "active" : "")">فا</button>
+            <button name="culture" value="en" class="@(!LocalDate.IsPersian ? "active" : "")">EN</button>
+        </form>
+    </div>
+    <script src="~/js/i18n-runtime.js" asp-append-version="true"></script>
+</body>
+</html>

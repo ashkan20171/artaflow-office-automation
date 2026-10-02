@@ -1,0 +1,7 @@
+Ashkan Office Automation - Stage 2 Fixed
+Fix: Razor RZ1017 caused by @model directive being concatenated with @{ ... }.
+Reviewed all .cshtml files for the same directive pattern.
+Files automatically corrected: 3
+- src/AshkanOfficeAutomation.Web/Views/Admin/Audit.cshtml
+- src/AshkanOfficeAutomation.Web/Views/Admin/Users.cshtml
+- src/AshkanOfficeAutomation.Web/Views/Letters/Index.cshtml

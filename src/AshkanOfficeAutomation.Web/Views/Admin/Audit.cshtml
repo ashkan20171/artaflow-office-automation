@@ -1,0 +1,3 @@
+@model IEnumerable<AuditEvent>
+
+@{ViewData["Title"]="Audit";}<div class="pagehead"><div><h1>گزارش امنیتی و Audit Trail</h1><p>ردیابی عملیات حساس کاربران</p></div></div><div class="panel"><table><thead><tr><th>زمان</th><th>کاربر</th><th>عملیات</th><th>موجودیت</th><th>شناسه</th><th>IP</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@LocalDate.DateTime(x.At.ToLocalTime())</td><td>@x.UserId</td><td>@x.Action</td><td>@x.Entity</td><td>@x.EntityId</td><td>@x.Ip</td></tr>}</tbody></table></div>

@@ -1,0 +1,30 @@
+@model DashboardViewModel
+@{
+ ViewData["Title"]=LocalDate.IsPersian?"داشبورد":"Dashboard";
+ var doneRate=Model.TotalLetters==0?0:(int)Math.Round(Model.Completed*100d/Model.TotalLetters);
+}
+<div class="dashboard-hero">
+ <div><span class="eyebrow">@(LocalDate.IsPersian?"مرکز عملیات هوشمند":"SMART OPERATIONS HUB")</span>
+ <h1>@(LocalDate.IsPersian?"سلام":"Hello")، @User.Identity?.Name</h1>
+ <p>@(LocalDate.IsPersian?"کارهای مهم، مکاتبات و هشدارهای امروز را از یک نقطه مدیریت کنید.":"Manage today's priority work, correspondence and alerts from one place.")</p></div>
+ <div class="hero-actions"><a class="btn" asp-controller="Letters" asp-action="Create">@(LocalDate.IsPersian?"+ نامه جدید":"+ New letter")</a><a class="ghost" asp-controller="CommandCenter">@(LocalDate.IsPersian?"مرکز فرماندهی":"Command Center")</a></div>
+</div>
+<div class="stats dashboard-kpis">
+ <a class="card" asp-controller="Letters"><span>@(LocalDate.IsPersian?"مکاتبات قابل دسترس":"Accessible letters")</span><strong>@Model.TotalLetters</strong><small>@(LocalDate.IsPersian?"بر اساس سطح دسترسی شما":"Based on your access")</small></a>
+ <a class="card" asp-controller="Inbox"><span>@(LocalDate.IsPersian?"در گردش":"In workflow")</span><strong>@Model.InWorkflow</strong><small>@(LocalDate.IsPersian?"نیازمند پیگیری":"Needs follow-up")</small></a>
+ <a class="card @(Model.OverdueTasks>0?"warn":"")" asp-controller="Tasks"><span>@(LocalDate.IsPersian?"وظایف عقب‌افتاده":"Overdue tasks")</span><strong>@Model.OverdueTasks</strong><small>@Model.MyOpenTasks @(LocalDate.IsPersian?"وظیفه باز":"open tasks")</small></a>
+ <a class="card" asp-controller="Notifications"><span>@(LocalDate.IsPersian?"اعلان خوانده‌نشده":"Unread notifications")</span><strong>@Model.UnreadNotifications</strong><small>@(LocalDate.IsPersian?"نیازمند توجه":"Needs attention")</small></a>
+</div>
+<div class="dashboard-grid">
+ <section class="panel attention-panel"><div class="section-head"><div><h3>@(LocalDate.IsPersian?"تمرکز امروز":"Today's focus")</h3><p class="muted">@(LocalDate.IsPersian?"نمای سریع موارد نیازمند اقدام":"Quick view of items requiring action")</p></div><a asp-controller="CommandCenter">@(LocalDate.IsPersian?"مشاهده همه":"View all") →</a></div>
+ <div class="attention-list">
+  <a asp-controller="Tasks"><span class="attention-icon">✓</span><div><b>@Model.MyOpenTasks @(LocalDate.IsPersian?"وظیفه باز":"open tasks")</b><small>@(LocalDate.IsPersian?"برای شما تخصیص یافته":"assigned to you")</small></div><strong>@Model.OverdueTasks</strong></a>
+  <a asp-controller="Notifications"><span class="attention-icon">●</span><div><b>@Model.UnreadNotifications @(LocalDate.IsPersian?"اعلان جدید":"new notifications")</b><small>@(LocalDate.IsPersian?"مرکز اعلان‌ها":"notification center")</small></div><strong>→</strong></a>
+ </div></section>
+ <section class="panel"><h3>@(LocalDate.IsPersian?"پیشرفت مکاتبات":"Correspondence progress")</h3><div class="metric-ring" style="--value:@doneRate"><span>@doneRate%</span></div><div class="metric-legend"><span>@(LocalDate.IsPersian?"تکمیل‌شده":"Completed") <b>@Model.Completed</b></span><span>@(LocalDate.IsPersian?"بایگانی":"Archived") <b>@Model.Archived</b></span></div></section>
+</div>
+<div class="panel"><div class="section-head"><h3>@(LocalDate.IsPersian?"آخرین مکاتبات":"Recent correspondence")</h3><a asp-controller="Letters">@(LocalDate.IsPersian?"همه مکاتبات":"All letters")</a></div>
+@if(Model.RecentLetters.Count==0){<p class="muted">@(LocalDate.IsPersian?"هنوز مکاتبه‌ای برای نمایش وجود ندارد.":"No correspondence to display yet.")</p>}
+else{<div class="responsive-table"><table><thead><tr><th>@(LocalDate.IsPersian?"شماره":"Number")</th><th>@(LocalDate.IsPersian?"موضوع":"Subject")</th><th>@(LocalDate.IsPersian?"اولویت":"Priority")</th><th>@(LocalDate.IsPersian?"وضعیت":"Status")</th></tr></thead><tbody>
+@foreach(var x in Model.RecentLetters){<tr><td>@x.Number</td><td><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id">@x.Subject</a></td><td><span class="status-pill">@x.Priority</span></td><td><span class="status-pill">@x.Status</span></td></tr>}
+</tbody></table></div>}</div>

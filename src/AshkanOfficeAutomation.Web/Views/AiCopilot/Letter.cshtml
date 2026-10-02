@@ -1,0 +1,5 @@
+@model AshkanOfficeAutomation.Web.Models.AiCopilotResult
+@{var letter=(Letter)ViewBag.Letter;ViewData["Title"]="AI · "+letter.Subject;}
+<div class="pagehead"><div><span class="eyebrow dark">AI LETTER ASSISTANT</span><h1>@letter.Subject</h1><p>@letter.Number</p></div><a class="soft-btn" asp-controller="Letters" asp-action="Details" asp-route-id="@letter.Id">بازگشت به نامه</a></div>
+<div class="ai-letter-grid"><section class="surface"><h3>@Model.Title</h3><pre class="ai-output">@Model.Output</pre>@foreach(var s in Model.Suggestions){<div class="insight-chip">@s</div>}</section><aside class="surface"><h3>عملیات هوشمند</h3><a class="action-tile" asp-action="Letter" asp-route-id="@letter.Id" asp-route-mode="summary">✦ خلاصه نامه <span>نکات اصلی متن</span></a><a class="action-tile" asp-action="Letter" asp-route-id="@letter.Id" asp-route-mode="classify">⌁ تحلیل اولویت <span>کلیدواژه و فوریت</span></a><a class="action-tile" asp-action="Letter" asp-route-id="@letter.Id" asp-route-mode="reply">↗ پیشنهاد پاسخ <span>Draft قابل بازبینی</span></a></aside></div>
+<div class="ai-disclaimer">خروجی دستیار باید قبل از استفاده اداری توسط کاربر بررسی و تأیید شود.</div>

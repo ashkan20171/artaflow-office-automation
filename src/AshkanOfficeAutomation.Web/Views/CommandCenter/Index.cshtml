@@ -1,0 +1,5 @@
+@model dynamic
+@{ViewData["Title"]="Command Center";}
+<div class="pagehead"><div><h1>Command Center</h1><p>نمای یکپارچه کارهای نیازمند توجه شما</p></div></div>
+<div class="stats commandstats"><a class="card" asp-controller="Inbox"><span>کارتابل باز</span><strong>@ViewBag.Inbox</strong></a><a class="card" asp-controller="Tasks"><span>وظایف باز</span><strong>@ViewBag.Tasks</strong></a><a class="card dangercard" asp-controller="Tasks"><span>عقب‌افتاده</span><strong>@ViewBag.Overdue</strong></a><a class="card" asp-controller="Notifications"><span>اعلان خوانده‌نشده</span><strong>@ViewBag.Notifications</strong></a><a class="card" asp-controller="Meetings"><span>جلسات ۷ روز آینده</span><strong>@ViewBag.Meetings</strong></a></div>
+<div class="panel"><h3>آخرین مکاتبات مرتبط</h3><table><thead><tr><th>شماره</th><th>موضوع</th><th>وضعیت</th></tr></thead><tbody>@foreach(var x in (IEnumerable<Letter>)ViewBag.Recent){<tr><td>@x.Number</td><td><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id">@x.Subject</a></td><td>@x.Status</td></tr>}</tbody></table></div>

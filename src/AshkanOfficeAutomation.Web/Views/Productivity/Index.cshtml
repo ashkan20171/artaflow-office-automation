@@ -1,0 +1,4 @@
+@{ViewData["Title"]="مرکز بهره‌وری";}
+<div class="pagehead"><div><h1>مرکز بهره‌وری</h1><p>موارد نشان‌شده، سررسیدهای نزدیک و کارهای باز شما</p></div></div>
+<div class="grid2"><div class="panel"><h3>★ نامه‌های نشان‌شده</h3>@foreach(var x in (IEnumerable<Letter>)ViewBag.Bookmarks){<div class="metricrow"><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id">@x.Subject</a><small>@x.Number</small></div>}</div><div class="panel"><h3>⏱ سررسیدهای ۷ روز آینده</h3>@foreach(var x in (IEnumerable<Letter>)ViewBag.DueLetters){<div class="metricrow"><a asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id">@x.Subject</a><b>@LocalDate.Date(x.DueAt)</b></div>}</div></div>
+<div class="panel"><h3>وظایف باز</h3>@foreach(var x in (IEnumerable<WorkItem>)ViewBag.Tasks){<div class="metricrow"><span>@x.Title</span><span>@x.Status · @x.Priority</span></div>}</div>

@@ -1,0 +1,6 @@
+@model RolePermissionsInput
+@{ViewData["Title"]="مجوزهای نقش";}
+<div class="pagehead"><div><h1>مجوزهای @Model.RoleName</h1><p>هر مجوز در سمت سرور نیز کنترل می‌شود.</p></div></div>
+<form method="post" class="panel"><div class="permission-grid">
+@foreach(var p in (IEnumerable<string>)ViewBag.All){<label class="permission"><input type="checkbox" name="Permissions" value="@p" checked="@Model.Permissions.Contains(p)"><span>@p</span></label>}
+</div><button class="btn">ذخیره مجوزها</button></form>

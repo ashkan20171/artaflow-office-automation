@@ -1,0 +1,14 @@
+@model AshkanOfficeAutomation.Web.Models.DatabaseHealthViewModel
+@{ViewData["Title"]="سلامت دیتابیس";}
+<div class="pagehead"><div><h1>سلامت دیتابیس</h1><p>بررسی اتصال و سازگاری Schema حیاتی سامانه</p></div></div>
+<div class="stats">
+ <div class="card"><span>وضعیت</span><strong>@Model.Status</strong></div>
+ <div class="card"><span>اتصال</span><strong>@(Model.CanConnect?"OK":"Failed")</strong></div>
+</div>
+<div class="panel">
+ <div class="metricrow"><span>Provider</span><b>@Model.Provider</b></div>
+ <div class="metricrow"><span>Database</span><b>@Model.Database</b></div>
+ <h3>OrganizationSettings</h3>
+ @if(Model.MissingOrganizationColumns.Any()){<div class="alert danger">ستون‌های ناقص: @string.Join("، ",Model.MissingOrganizationColumns)</div>}
+ else{<div class="alert">Schema این بخش کامل است.</div>}
+</div>

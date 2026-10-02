@@ -1,0 +1,13 @@
+@model AshkanOfficeAutomation.Web.Models.NotificationPreference
+@{ViewData["Title"]="تنظیمات اعلان";}
+<div class="pagehead"><div><h1>تنظیمات اعلان‌ها</h1><p>مشخص کنید چه رویدادهایی برای شما اعلان ایجاد کنند.</p></div></div>
+@if(TempData["Info"]!=null){<div class="alert">@TempData["Info"]</div>}
+<form asp-action="Save" method="post" class="panel preference-grid">
+ <label><input asp-for="SlaAlerts"> <span><b>SLA و سررسید</b><small>نامه‌های عقب‌افتاده و نزدیک سررسید</small></span></label>
+ <label><input asp-for="ReferralAlerts"> <span><b>ارجاعات</b><small>ارجاع جدید و تغییر وضعیت</small></span></label>
+ <label><input asp-for="TaskAlerts"> <span><b>وظایف</b><small>وظیفه جدید و سررسید کارها</small></span></label>
+ <label><input asp-for="MeetingAlerts"> <span><b>جلسات</b><small>دعوت و تغییرات جلسات</small></span></label>
+ <label><input asp-for="SecurityAlerts"> <span><b>امنیت حساب</b><small>رویدادهای مهم امنیتی</small></span></label>
+ <label><input asp-for="DailyDigest"> <span><b>خلاصه روزانه</b><small>آماده‌سازی برای Digest روزانه</small></span></label>
+ <button class="primary" type="submit">ذخیره تنظیمات</button>
+</form>

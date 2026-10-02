@@ -1,0 +1,4 @@
+@model IEnumerable<Department>
+@{ViewData["Title"]="ساختار سازمانی";}
+<div class="pagehead"><div><h1>ساختار سازمانی</h1><p>واحدها و سلسله‌مراتب سازمان</p></div><a class="btn" asp-action="Create">+ واحد جدید</a></div>
+<div class="panel"><table><thead><tr><th>واحد</th><th>واحد والد</th></tr></thead><tbody>@foreach(var d in Model){<tr><td>@d.Name</td><td>@d.Parent?.Name</td></tr>}</tbody></table></div>

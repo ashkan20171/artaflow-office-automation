@@ -1,0 +1,9 @@
+@model IEnumerable<Notification>
+@{ViewData["Title"]=LocalDate.IsPersian?"اعلان‌ها":"Notifications"; var unread=(int)ViewBag.UnreadCount;}
+<div class="pagehead"><div><h1>@(LocalDate.IsPersian?"مرکز اعلان‌ها":"Notification Center")</h1><p>@(LocalDate.IsPersian?$"{unread} اعلان خوانده‌نشده":$"{unread} unread notifications")</p></div>
+<div class="page-actions"><a class="ghost" asp-action="Index" asp-route-unread="@(!(bool)ViewBag.UnreadOnly)">@((bool)ViewBag.UnreadOnly?(LocalDate.IsPersian?"نمایش همه":"Show all"):(LocalDate.IsPersian?"فقط خوانده‌نشده":"Unread only"))</a>
+@if(unread>0){<form asp-action="ReadAll" method="post"><button class="btn">@(LocalDate.IsPersian?"خواندن همه":"Mark all read")</button></form>}</div></div>
+<div class="notification-feed">
+@if(!Model.Any()){<div class="empty-state"><b>@(LocalDate.IsPersian?"اعلانی وجود ندارد":"No notifications")</b><p>@(LocalDate.IsPersian?"در حال حاضر چیزی نیازمند توجه شما نیست.":"Nothing needs your attention right now.")</p></div>}
+@foreach(var n in Model){<article class="notice @(n.ReadAt==null?"unread":"")"><span class="notice-dot"></span><div class="notice-body"><div class="notice-title"><b>@n.Title</b>@if(n.ReadAt==null){<span>@(LocalDate.IsPersian?"جدید":"New")</span>}</div><p>@n.Message</p><small>@LocalDate.DateTime(n.CreatedAt.ToLocalTime())</small></div><div class="notice-actions">@if(n.Link!=null){<a class="ghost" href="@n.Link">@(LocalDate.IsPersian?"مشاهده":"Open")</a>} @if(n.ReadAt==null){<form asp-action="Read" method="post"><input type="hidden" name="id" value="@n.Id"><button class="ghost">@(LocalDate.IsPersian?"خواندم":"Mark read")</button></form>}</div></article>}
+</div>

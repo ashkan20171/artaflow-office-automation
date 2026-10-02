@@ -1,0 +1,5 @@
+@model IEnumerable<Meeting>
+@{ViewData["Title"]="جلسات";}
+<div class="pagehead"><div><h1>جلسات سازمانی</h1><p>تقویم جلسات، دستور جلسه و شرکت‌کنندگان</p></div></div>
+<div class="grid2"><div class="panel"><h3>جلسات</h3>@foreach(var m in Model){<div class="task"><div><b>@m.Title</b><p>@m.Location · @m.Agenda</p><small>@LocalDate.DateTime(m.StartsAt) تا @LocalDate.DateTime(m.EndsAt)</small></div></div>}</div>
+@if(User.IsInRole("Administrator")||User.HasClaim("permission","meetings.manage")){<form asp-action="Create" method="post" class="panel"><h3>جلسه جدید</h3><label>عنوان</label><input name="title" required><label>شروع</label><input type="datetime-local" name="startsAt" required><label>پایان</label><input type="datetime-local" name="endsAt" required><label>محل</label><input name="location"><label>دستور جلسه</label><textarea name="agenda"></textarea><label>شرکت‌کنندگان</label><select name="attendeeIds" multiple size="7">@foreach(var u in (IEnumerable<AppUser>)ViewBag.Users){<option value="@u.Id">@u.FullName</option>}</select><button class="btn">ثبت جلسه</button></form>}</div>

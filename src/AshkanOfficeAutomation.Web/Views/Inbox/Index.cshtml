@@ -1,0 +1,8 @@
+@model IEnumerable<Referral>
+@{ViewData["Title"]="کارتابل من";}
+<div class="pagehead"><div><h1>کارتابل من</h1><p>نامه‌های ارجاع‌شده به شما و وضعیت رسیدگی</p></div></div>
+<div class="panel"><table><thead><tr><th>نامه</th><th>توضیح ارجاع</th><th>تاریخ</th><th>وضعیت</th><th>اقدام</th></tr></thead><tbody>
+@foreach(var r in Model){<tr><td><a asp-controller="Letters" asp-action="Details" asp-route-id="@r.LetterId">@r.Letter?.Subject</a></td>
+<td>@r.Note</td><td>@LocalDate.Date(r.CreatedAt.ToLocalTime())</td><td>@(r.DoneAt.HasValue?"انجام‌شده":"در انتظار")</td>
+<td>@if(!r.DoneAt.HasValue){<form asp-action="Complete" method="post"><input type="hidden" name="id" value="@r.Id"><button class="btn">انجام شد</button></form>}</td></tr>}
+</tbody></table></div>

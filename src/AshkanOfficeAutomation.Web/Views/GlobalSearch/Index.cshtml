@@ -1,0 +1,8 @@
+@model AshkanOfficeAutomation.Web.Models.GlobalSearchViewModel
+@{ViewData["Title"]="جست‌وجوی سراسری";}
+<section class="hero-panel search-hero"><div><span class="eyebrow">UNIFIED SEARCH</span><h1>هر چیزی را سریع پیدا کنید</h1><p>مکاتبات، وظایف و دانش سازمانی در یک جست‌وجو.</p></div></section>
+<form method="get" class="global-search-box"><span>⌕</span><input name="q" value="@Model.Query" autofocus placeholder="شماره نامه، موضوع، وظیفه یا مقاله..."><button class="primary">جست‌وجو</button></form>
+@if(Model.Query.Length>=2){<div class="search-summary"><b>@Model.Total</b> نتیجه برای «@Model.Query»</div>
+<div class="search-grid"><section class="surface"><div class="section-title"><h3>مکاتبات</h3><span>@Model.Letters.Count</span></div>@foreach(var x in Model.Letters){<a class="search-result" asp-controller="Letters" asp-action="Details" asp-route-id="@x.Id"><b>@x.Subject</b><span>@x.Number · @x.Status · @x.Priority</span></a>}@if(!Model.Letters.Any()){<div class="empty-inline">نتیجه‌ای نیست</div>}</section>
+<section class="surface"><div class="section-title"><h3>وظایف</h3><span>@Model.Tasks.Count</span></div>@foreach(var x in Model.Tasks){<a class="search-result" asp-controller="Tasks" asp-action="Index"><b>@x.Title</b><span>@x.Status · @LocalDate.Date(x.DueAt)</span></a>}@if(!Model.Tasks.Any()){<div class="empty-inline">نتیجه‌ای نیست</div>}</section>
+<section class="surface"><div class="section-title"><h3>مرکز دانش</h3><span>@Model.Articles.Count</span></div>@foreach(var x in Model.Articles){<a class="search-result" asp-controller="Knowledge" asp-action="Index"><b>@x.Title</b><span>@x.Category · @x.Keywords</span></a>}@if(!Model.Articles.Any()){<div class="empty-inline">نتیجه‌ای نیست</div>}</section></div>}
